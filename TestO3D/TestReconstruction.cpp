@@ -27,6 +27,7 @@ TestReconstruction::~TestReconstruction ()
 
 void TestReconstruction::Run ()
 {
+
   std::string chairPath = "..\\TestImages\\";
 
   std::vector<std::string> colorFiles, depthFiles;
