@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+.vs/
+TestO3D/x64/
+x64/
