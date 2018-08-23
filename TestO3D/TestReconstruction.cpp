@@ -27,8 +27,8 @@ TestReconstruction::~TestReconstruction ()
 
 void TestReconstruction::Run ()
 {
-  
-  std::string chairPath = "D:\\Users\\Desktop\\chair\\";
+
+  std::string chairPath = "..\\TestImages\\";
 
   std::vector<std::string> colorFiles, depthFiles;
 
@@ -47,6 +47,7 @@ void TestReconstruction::Run ()
   auto intrinsic = PinholeCameraIntrinsic ( PinholeCameraIntrinsicParameters::PrimeSenseDefault );
 
   OdometryOption option;
+
   Eigen::Matrix4d odo_init = Eigen::Matrix4d::Identity ();
   Eigen::Matrix4d trans_odo = Eigen::Matrix4d::Identity ();
   Eigen::Matrix6d info_odo = Eigen::Matrix6d::Zero ();
@@ -88,4 +89,5 @@ void TestReconstruction::Run ()
     }
 
   }
+
 }
