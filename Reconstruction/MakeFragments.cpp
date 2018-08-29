@@ -68,22 +68,16 @@ std::tuple<bool, Eigen::Matrix4d, Eigen::Matrix6d> RegisterOneRGBDPair (
 
 std::tuple<std::vector<std::string>, std::vector<std::string>> ReadRGBDColorFiles ( std::string path )
 {
-  char fullPath[MAX_PATH];
-
-  GetFullPathNameA ( path.c_str (), MAX_PATH, fullPath, NULL );
-
-  std::string chairPath = fullPath;
-
   std::vector<std::string> colorFiles, depthFiles;
 
   fs::directory_iterator end_itr; // default construction yields past-the-end
 
-  for (auto & p : fs::directory_iterator ( chairPath + "rgb" ))
+  for (auto & p : fs::directory_iterator ( path + "rgb" ))
   {
     colorFiles.push_back ( p.path ().string () );
   }
 
-  for (auto & p : fs::directory_iterator ( chairPath + "depth" ))
+  for (auto & p : fs::directory_iterator ( path + "depth" ))
   {
     depthFiles.push_back ( p.path ().string () );
   }
@@ -204,9 +198,17 @@ void MakeFragments::Run ()
 {
   std::vector<std::string> colorFiles, depthFiles;
 
-  auto intrinsic = PinholeCameraIntrinsic ( PinholeCameraIntrinsicParameters::PrimeSenseDefault );
+  auto intrinsic = PinholeCameraIntrinsic ( PinholeCameraIntrinsicParameters::PrimeSenseDefault );  
 
   std::string path = "..\\TestImages\\";
+
+  char fullPath[MAX_PATH];
+
+  GetFullPathNameA ( path.c_str (), MAX_PATH, fullPath, NULL );
+
+  path = fullPath;
+
+  CreateDirectoryA ( (path + folder_fragment).c_str (), nullptr );
 
   std::tie ( colorFiles, depthFiles ) = ReadRGBDColorFiles ( path );
 
