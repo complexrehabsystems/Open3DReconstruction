@@ -6,8 +6,10 @@
 #include <sstream>
 #include <cstdio>
 
-
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif // !NOMINMAX
+
 #include <Windows.h>
 
 #define DEL( ptr ) \

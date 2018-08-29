@@ -1,4 +1,8 @@
 #pragma once
+
+
+
+
 class TestReconstruction
 {
 public:
@@ -6,5 +10,8 @@ public:
   ~TestReconstruction ();
 
   void Run ();
+
+private:
+
 };
 

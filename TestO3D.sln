@@ -5,7 +5,16 @@ VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestO3D", "TestO3D\TestO3D.vcxproj", "{BCEA8955-2A1A-4DBA-9458-06818EE49B09}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestConsole", "Console\TestConsole.vcxproj", "{DFFE26FB-0628-356A-A861-3194D0378DAD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Reconstruction", "Reconstruction\Reconstruction.vcxitems", "{F228A56C-FCD9-48DD-B9DE-0A6636011DBF}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Reconstruction\Reconstruction.vcxitems*{bcea8955-2a1a-4dba-9458-06818ee49b09}*SharedItemsImports = 4
+		Reconstruction\Reconstruction.vcxitems*{dffe26fb-0628-356a-a861-3194d0378dad}*SharedItemsImports = 4
+		Reconstruction\Reconstruction.vcxitems*{f228a56c-fcd9-48dd-b9de-0a6636011dbf}*SharedItemsImports = 9
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
@@ -33,6 +42,18 @@ Global
 		{BCEA8955-2A1A-4DBA-9458-06818EE49B09}.RelWithDebInfo|x64.Build.0 = Release|x64
 		{BCEA8955-2A1A-4DBA-9458-06818EE49B09}.RelWithDebInfo|x86.ActiveCfg = Release|Win32
 		{BCEA8955-2A1A-4DBA-9458-06818EE49B09}.RelWithDebInfo|x86.Build.0 = Release|Win32
+		{DFFE26FB-0628-356A-A861-3194D0378DAD}.Debug|x64.ActiveCfg = Debug|x64
+		{DFFE26FB-0628-356A-A861-3194D0378DAD}.Debug|x64.Build.0 = Debug|x64
+		{DFFE26FB-0628-356A-A861-3194D0378DAD}.Debug|x86.ActiveCfg = Debug|x64
+		{DFFE26FB-0628-356A-A861-3194D0378DAD}.MinSizeRel|x64.ActiveCfg = MinSizeRel|x64
+		{DFFE26FB-0628-356A-A861-3194D0378DAD}.MinSizeRel|x64.Build.0 = MinSizeRel|x64
+		{DFFE26FB-0628-356A-A861-3194D0378DAD}.MinSizeRel|x86.ActiveCfg = MinSizeRel|x64
+		{DFFE26FB-0628-356A-A861-3194D0378DAD}.Release|x64.ActiveCfg = Release|x64
+		{DFFE26FB-0628-356A-A861-3194D0378DAD}.Release|x64.Build.0 = Release|x64
+		{DFFE26FB-0628-356A-A861-3194D0378DAD}.Release|x86.ActiveCfg = Release|x64
+		{DFFE26FB-0628-356A-A861-3194D0378DAD}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
+		{DFFE26FB-0628-356A-A861-3194D0378DAD}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
+		{DFFE26FB-0628-356A-A861-3194D0378DAD}.RelWithDebInfo|x86.ActiveCfg = RelWithDebInfo|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
