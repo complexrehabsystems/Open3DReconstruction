@@ -3,6 +3,7 @@
 #include <string>
 #include <filesystem>
 #include <vector>
+#include <tuple>
 
 
 extern int n_frames_per_fragment;
@@ -20,6 +21,7 @@ extern std::string template_global_mesh;
 
 
 std::vector<std::string> GetFileList ( std::string path, std::string extension = "" );
+std::tuple<std::vector<std::string>, std::vector<std::string>> ReadRGBDColorFiles ( std::string path );
 
 void MakeFolder ( std::string path_folder );
 

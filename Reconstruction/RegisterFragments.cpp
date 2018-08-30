@@ -6,9 +6,7 @@
 
 #include <Open3D/Core/Core.h>
 #include <Open3D/Core/Registration/FastGlobalRegistration.h>
-#include <Open3D/Core/Registration/Registration.h>
 #include <Open3D/IO/IO.h>
-#include <Open3D/Visualization/Visualization.h>
 
 #include <iostream>
 #include <tuple>
@@ -26,7 +24,7 @@ RegisterFragments::~RegisterFragments ()
 {
 }
 
-std::tuple<std::shared_ptr<PointCloud>, std::shared_ptr<Feature>> PreprocessPointCloud ( PointCloud pcd )
+std::tuple<std::shared_ptr<PointCloud>, std::shared_ptr<Feature>> PreprocessPointCloud ( PointCloud& pcd )
 {
   auto pcd_down = VoxelDownSample ( pcd, 0.05 );
 
@@ -62,7 +60,7 @@ std::tuple<bool, Eigen::Matrix4d> ComputeInitialRegistration (
   Feature& source_fpfh,
   Feature& target_fpfh,
   std::string path,
-  bool draw_result = false)
+  bool draw_result = false )
 {
   Eigen::Matrix4d transformation;
   bool success_reg;
@@ -74,7 +72,7 @@ std::tuple<bool, Eigen::Matrix4d> ComputeInitialRegistration (
     PoseGraph pose_graph_frag;
     ReadPoseGraph ( Format ( path + template_fragment_posegraph_optimized, s ), pose_graph_frag );
 
-    int n_nodes = pose_graph_frag.nodes_.size ();
+    int n_nodes = (int)pose_graph_frag.nodes_.size ();
     transformation = pose_graph_frag.nodes_[n_nodes - 1].pose_.inverse ();
   }
   else
@@ -95,21 +93,122 @@ std::tuple<bool, Eigen::Matrix4d> ComputeInitialRegistration (
   return std::make_tuple ( true, transformation );
 }
 
+// colored pointcloud registration
+// This is implementation of following paper
+// J.Park, Q. - Y.Zhou, V.Koltun,
+// Colored Point Cloud Registration Revisited, ICCV 2017
+std::tuple<Eigen::Matrix4d, Eigen::Matrix6d> RegisterColoredPointCloudICP (
+  PointCloud& source,
+  PointCloud& target,
+  Eigen::Matrix4d init_transformation = Eigen::Matrix4d::Identity (),
+  std::vector<double> voxel_radius = { 0.05, 0.025, 0.0125 },
+  std::vector<int> max_iter = { 50, 30, 14 },
+  bool draw_result = false
+)
+{
+  auto current_transformation = init_transformation;
+  RegistrationResult result_icp;
 
+  for (int scale = 0; scale < max_iter.size (); scale++)
+  {
+    auto iter = max_iter[scale];
+    auto radius = voxel_radius[scale];
+    auto source_down = VoxelDownSample ( source, radius );
+    auto target_down = VoxelDownSample ( target, radius );
+
+    EstimateNormals ( *source_down, KDTreeSearchParamHybrid ( radius * 2, 30 ) );
+    EstimateNormals ( *target_down, KDTreeSearchParamHybrid ( radius * 2, 30 ) );
+
+    result_icp = RegistrationICP (
+      *source_down, *target_down, radius,
+      current_transformation,
+      TransformationEstimationPointToPoint ( false ),
+      ICPConvergenceCriteria ( 1e-6, 1e-6, iter ) );
+    current_transformation = result_icp.transformation_;
+  }
+
+  auto information_matrix = GetInformationMatrixFromPointClouds ( source, target, 0.07, result_icp.transformation_ );
+
+  if (draw_result)
+  {
+
+  }
+
+  return std::tie ( result_icp.transformation_, information_matrix );
+}
+
+std::tuple<bool, Eigen::Matrix4d, Eigen::Matrix6d> LocalRefinement (
+  int s, int t,
+  PointCloud& source,
+  PointCloud& target,
+  Eigen::Matrix4d& transformation_init,
+  bool draw_result = false )
+{
+  Eigen::Matrix4d transformation;
+  Eigen::Matrix6d information;
+
+  if (t == s + 1)
+  {
+    // odometry case
+    std::tie ( transformation, information ) = RegisterColoredPointCloudICP ( source, target, transformation_init, { 0.0125 }, { 30 } );
+  }
+  else
+  {
+    // loop closure case
+    std::tie ( transformation, information ) = RegisterColoredPointCloudICP ( source, target, transformation_init);
+  }
+
+  bool success_local = false;
+
+  if (information(5,5) / std::min ( source.points_.size (), target.points_.size () ) > 0.3)
+  {
+    success_local = true;
+  }
+
+  if(draw_result)
+  { }
+  
+  return std::make_tuple (success_local, transformation, information );
+}
+
+std::tuple<Eigen::Matrix4d, PoseGraph> UpdateOdometryPoseGraph (
+  int s, int t,
+  Eigen::Matrix4d& transformation,
+  Eigen::Matrix6d& information,
+  Eigen::Matrix4d& odometry,
+  PoseGraph pose_graph
+)
+{
+  if (t == s + 1)
+  {
+    // odometry case
+    odometry = transformation * odometry;
+    auto odometry_inv = odometry.inverse ();
+    pose_graph.nodes_.push_back ( PoseGraphNode ( odometry_inv ) );
+    pose_graph.edges_.push_back ( PoseGraphEdge ( s, t, transformation, information, false ) );
+  }
+  else
+  {
+    // loop closure case
+    pose_graph.edges_.push_back ( PoseGraphEdge ( s, t, transformation, information, true ) );
+  }
+
+  return std::make_tuple ( odometry, pose_graph );
+}
 
 void RegisterPointCloud ( std::string path, std::vector<std::string> ply_file_names, bool draw_result = false )
 {
-  auto pose_graph = PoseGraph ();
-  auto odometry = Eigen::Matrix4d::Identity ();
-  auto info = Eigen::Matrix6d::Identity ();
+  PoseGraph pose_graph;
+  Eigen::Matrix4d odometry = Eigen::Matrix4d::Identity ();
 
   pose_graph.nodes_.push_back ( PoseGraphNode ( odometry ) );
 
   PointCloud source, target;
   std::shared_ptr<PointCloud> source_down, target_down;
   std::shared_ptr<Feature> source_fpfh, target_fpfh;
-  bool success_global;
-  Eigen::Matrix4d transformation_init;
+  bool success_global, success_local;
+  Eigen::Matrix4d transformation_init, transformation_icp;
+  Eigen::Matrix6d information_icp;
 
   for (int s = 0; s < ply_file_names.size (); s++)
   {
@@ -128,13 +227,24 @@ void RegisterPointCloud ( std::string path, std::vector<std::string> ply_file_na
       if (!success_global)
         continue;
 
+      std::tie ( success_local, transformation_icp, information_icp ) = LocalRefinement (
+        s, t, source, target, transformation_init, draw_result );
+
+      if (!success_local)
+        continue;
+
+      std::tie ( odometry, pose_graph ) = UpdateOdometryPoseGraph (
+        s, t, transformation_icp, information_icp,
+        odometry, pose_graph );
+
     }
   }
+
+  WritePoseGraph ( path + template_global_posegraph, pose_graph );
 }
 
-void RegisterFragments::Run ()
+void RegisterFragments::Run (std::string path)
 {
-  std::string path = FullPath ( "..\\TestImages\\" );
 
   auto ply_file_names = GetFileList ( path + folder_fragment, ".ply" );
   MakeFolder ( path + folder_scene );

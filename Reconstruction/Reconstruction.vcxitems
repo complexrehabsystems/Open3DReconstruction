@@ -16,6 +16,7 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Common.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Helpers.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IntegrateScene.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MakeFragments.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OptimizePoseGraph.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RegisterFragments.h" />
@@ -24,6 +25,7 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Common.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Helpers.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)IntegrateScene.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MakeFragments.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OptimizePoseGraph.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RegisterFragments.cpp" />

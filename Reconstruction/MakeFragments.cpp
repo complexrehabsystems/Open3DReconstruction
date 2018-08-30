@@ -62,16 +62,6 @@ std::tuple<bool, Eigen::Matrix4d, Eigen::Matrix6d> RegisterOneRGBDPair (
 
 }
 
-std::tuple<std::vector<std::string>, std::vector<std::string>> ReadRGBDColorFiles ( std::string path )
-{
-  std::vector<std::string> colorFiles, depthFiles;
-
-  colorFiles = GetFileList ( path + "rgb" );
-  depthFiles = GetFileList ( path + "depth" );
-
-  return std::make_tuple ( colorFiles, depthFiles );
-}
-
 std::shared_ptr<TriangleMesh> IntegrateRGBFramesForFragment (
   std::vector<std::string> colorFiles,
   std::vector<std::string> depthFiles,
@@ -187,13 +177,9 @@ void MakePoseGraphForFragment (
 
 }
 
-void MakeFragments::Run ()
+void MakeFragments::Run ( std::string path, PinholeCameraIntrinsic intrinsic )
 {
   std::vector<std::string> colorFiles, depthFiles;
-
-  auto intrinsic = PinholeCameraIntrinsic ( PinholeCameraIntrinsicParameters::PrimeSenseDefault );  
-
-  std::string path = FullPath("..\\TestImages\\");
 
   MakeFolder ( path + folder_fragment );
 

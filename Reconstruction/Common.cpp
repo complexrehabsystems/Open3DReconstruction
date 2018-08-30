@@ -13,9 +13,19 @@ std::vector<std::string> GetFileList ( std::string path, std::string extension)
     files.push_back ( p.path ().string () );
   }
 
-  // note assuming already sorted alpha numerically
+  // note: assuming already sorted alpha numerically
 
   return files;
+}
+
+std::tuple<std::vector<std::string>, std::vector<std::string>> ReadRGBDColorFiles ( std::string path )
+{
+  std::vector<std::string> colorFiles, depthFiles;
+
+  colorFiles = GetFileList ( path + "rgb" );
+  depthFiles = GetFileList ( path + "depth" );
+
+  return std::make_tuple ( colorFiles, depthFiles );
 }
 
 void MakeFolder ( std::string path_folder )
