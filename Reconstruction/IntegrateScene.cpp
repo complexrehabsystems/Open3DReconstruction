@@ -25,6 +25,8 @@ IntegrateScene::~IntegrateScene ()
 
 void IntegrateScene::Run (std::string path, PinholeCameraIntrinsic intrinsic)
 {
+  ScopeTimer timer ( "Integrate Scene" );
+
   std::vector<std::string> colorFiles, depthFiles;
 
   std::tie ( colorFiles, depthFiles ) = ReadRGBDColorFiles ( path );

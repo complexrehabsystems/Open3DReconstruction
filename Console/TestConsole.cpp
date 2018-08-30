@@ -1,6 +1,7 @@
 #include "Common.h"
 #include "MakeFragments.h"
 #include "RegisterFragments.h"
+#include "IntegrateScene.h"
 
 #include <Open3D/Core/Core.h>
 #include <iostream>
@@ -14,19 +15,22 @@ int main(int argc, char *argv[])
 
   std::string path = FullPath ( "..\\TestImages\\" );
 
-  auto frag = MakeFragments ();
+  {
+    ScopeTimer timer ( "Full reconstruction" );
+    
+    std::cout << "start MakeFragments" << std::endl;
+    auto frag = MakeFragments ();
+    frag.Run ( path, intrinsic );
+    std::cout << "end MakeFragments" << std::endl;    
 
-  std::cout << "start MakeFragments" << std::endl;
+    std::cout << "start RegisterFragments" << std::endl;
+    auto reg = RegisterFragments ();
+    reg.Run ( path );
+    std::cout << "end RegisterFragments" << std::endl;    
 
-  frag.Run (path, intrinsic);
-
-  std::cout << "end MakeFragments" << std::endl;
-
-  auto reg = RegisterFragments ();
-
-  std::cout << "start RegisterFragments" << std::endl;
-
-  reg.Run (path);
-
-  std::cout << "end RegisterFragments" << std::endl;
+    std::cout << "start IntegrateScene" << std::endl;
+    auto integration = IntegrateScene ();
+    integration.Run ( path, intrinsic );
+    std::cout << "end RegisterFragments" << std::endl;
+  }
 }

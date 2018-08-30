@@ -77,7 +77,8 @@ std::tuple<bool, Eigen::Matrix4d> ComputeInitialRegistration (
   }
   else
   {
-    PrintInfo ( "Register point cloud fpfh" );
+    // loop closure
+    PrintInfo ( "Register point cloud fpfh\n" );
     std::tie ( success_reg, transformation ) = RegisterPointCloudFpfh ( source_down, target_down, source_fpfh, target_fpfh );
     if (!success_reg)
     {
@@ -160,7 +161,7 @@ std::tuple<bool, Eigen::Matrix4d, Eigen::Matrix6d> LocalRefinement (
 
   bool success_local = false;
 
-  if (information(5,5) / std::min ( source.points_.size (), target.points_.size () ) > 0.3)
+  if (information(5,5) / (double)std::min ( (double)source.points_.size (), (double)target.points_.size () ) > 0.3)
   {
     success_local = true;
   }
@@ -214,9 +215,9 @@ void RegisterPointCloud ( std::string path, std::vector<std::string> ply_file_na
   {
     for (int t = s + 1; t < ply_file_names.size (); t++)
     {
-      PrintInfo ( "Reading %s...\n", ply_file_names[s] );
+      PrintInfo ( "Reading %s...\n", ply_file_names[s].c_str() );
       ReadPointCloud ( ply_file_names[s], source );
-      PrintInfo ( "Reading %s...\n", ply_file_names[t] );
+      PrintInfo ( "Reading %s...\n", ply_file_names[t].c_str () );
       ReadPointCloud ( ply_file_names[t], target );
 
       std::tie ( source_down, source_fpfh ) = PreprocessPointCloud ( source );
@@ -245,7 +246,7 @@ void RegisterPointCloud ( std::string path, std::vector<std::string> ply_file_na
 
 void RegisterFragments::Run (std::string path)
 {
-
+  ScopeTimer timer ( "Register Fragments" );
   auto ply_file_names = GetFileList ( path + folder_fragment, ".ply" );
   MakeFolder ( path + folder_scene );
 
