@@ -46,7 +46,9 @@ void DebugOut (const std::string fmt, Args ... args)
 
   output = output.append ("\r\n");
 
-  OutputDebugString ((LPCWSTR)s2ws (output).c_str ());
+  //OutputDebugString ((LPCWSTR)s2ws (output).c_str ());
+
+  OutputDebugString ( output.c_str () );
 #endif
 }
 

@@ -18,12 +18,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Helpers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MakeFragments.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OptimizePoseGraph.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RegisterFragments.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TestReconstruction.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Common.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Helpers.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MakeFragments.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OptimizePoseGraph.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RegisterFragments.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TestReconstruction.cpp" />
   </ItemGroup>
 </Project>

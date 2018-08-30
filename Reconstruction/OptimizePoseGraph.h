@@ -9,5 +9,6 @@ public:
   ~OptimizePoseGraph ();
 
   void OptimizePoseGraphForFragment ( std::string path, int fragment_id );
+  void OptimizePoseGraphForScene ( std::string path );
 };
 
