@@ -33,3 +33,9 @@
 .vs/
 TestO3D/x64/
 x64/
+Console/bin/
+Console/TestConsole.vcxproj.user
+Console/TestConsole.vcxproj.filters
+Console/TestConsole.dir/
+TestImages/fragments/
+TestImages/scene/

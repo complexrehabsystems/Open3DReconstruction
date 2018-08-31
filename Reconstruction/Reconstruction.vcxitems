@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{f228a56c-fcd9-48dd-b9de-0a6636011dbf}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Common.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Helpers.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IntegrateScene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MakeFragments.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OptimizePoseGraph.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RegisterFragments.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TestReconstruction.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Common.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Helpers.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)IntegrateScene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MakeFragments.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OptimizePoseGraph.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RegisterFragments.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TestReconstruction.cpp" />
+  </ItemGroup>
+</Project>
