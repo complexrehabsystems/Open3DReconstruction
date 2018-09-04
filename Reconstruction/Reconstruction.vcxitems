@@ -19,6 +19,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)IntegrateScene.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MakeFragments.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OptimizePoseGraph.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RealtimeSystem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RegisterFragments.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TestReconstruction.h" />
   </ItemGroup>
@@ -28,6 +29,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)IntegrateScene.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MakeFragments.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OptimizePoseGraph.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RealtimeSystem.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RegisterFragments.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TestReconstruction.cpp" />
   </ItemGroup>

@@ -86,7 +86,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(OPEN3D_ROOT)include;$(OPEN3D_ROOT)include\open3d;$(OPEN3D_ROOT)include\open3d\external;$(OPEN3D_ROOT)include\open3d\external\eigen;$(OPEN3D_ROOT)include\open3d\external\glew\include;$(OPEN3D_ROOT)include\open3d\external\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPEN3D_ROOT)include;$(OPEN3D_ROOT)include\open3d;$(OPEN3D_ROOT)include\open3d\3rdparty;$(OPEN3D_ROOT)include\open3d\3rdparty\eigen;$(OPEN3D_ROOT)include\open3d\3rdparty\glew\include;$(OPEN3D_ROOT)include\open3d\3rdparty\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -130,7 +130,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(OPEN3D_ROOT)include;$(OPEN3D_ROOT)include\open3d;$(OPEN3D_ROOT)include\open3d\external;$(OPEN3D_ROOT)include\open3d\external\eigen;$(OPEN3D_ROOT)include\open3d\external\glew\include;$(OPEN3D_ROOT)include\open3d\external\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPEN3D_ROOT)include;$(OPEN3D_ROOT)include\open3d;$(OPEN3D_ROOT)include\open3d\3rdparty;$(OPEN3D_ROOT)include\open3d\3rdparty\eigen;$(OPEN3D_ROOT)include\open3d\3rdparty\glew\include;$(OPEN3D_ROOT)include\open3d\3rdparty\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -174,7 +174,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(OPEN3D_ROOT)include;$(OPEN3D_ROOT)include\open3d;$(OPEN3D_ROOT)include\open3d\external;$(OPEN3D_ROOT)include\open3d\external\eigen;$(OPEN3D_ROOT)include\open3d\external\glew\include;$(OPEN3D_ROOT)include\open3d\external\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPEN3D_ROOT)include;$(OPEN3D_ROOT)include\open3d;$(OPEN3D_ROOT)include\open3d\3rdparty;$(OPEN3D_ROOT)include\open3d\3rdparty\eigen;$(OPEN3D_ROOT)include\open3d\3rdparty\glew\include;$(OPEN3D_ROOT)include\open3d\3rdparty\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -218,7 +218,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(OPEN3D_ROOT)include;$(OPEN3D_ROOT)include\open3d;$(OPEN3D_ROOT)include\open3d\external;$(OPEN3D_ROOT)include\open3d\external\eigen;$(OPEN3D_ROOT)include\open3d\external\glew\include;$(OPEN3D_ROOT)include\open3d\external\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPEN3D_ROOT)include;$(OPEN3D_ROOT)include\open3d;$(OPEN3D_ROOT)include\open3d\3rdparty;$(OPEN3D_ROOT)include\open3d\3rdparty\eigen;$(OPEN3D_ROOT)include\open3d\3rdparty\glew\include;$(OPEN3D_ROOT)include\open3d\3rdparty\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
       <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
