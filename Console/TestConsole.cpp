@@ -2,6 +2,7 @@
 #include "MakeFragments.h"
 #include "RegisterFragments.h"
 #include "IntegrateScene.h"
+#include "RealtimeSystem.h"
 
 #include <Open3D/Core/Core.h>
 #include <iostream>
@@ -14,9 +15,10 @@ int main(int argc, char *argv[])
   auto intrinsic = PinholeCameraIntrinsic ( PinholeCameraIntrinsicParameters::PrimeSenseDefault );
 
   std::string path = FullPath ( "..\\TestImages\\" );
+  //std::string path = "D:\\dev\\crs\\Realsense-Dataset\\Realsense-Dataset\\bin\\Debug\\doll1\\" ;
 
   {
-    ScopeTimer timer ( "Full reconstruction" );
+    /*ScopeTimer timer ( "Full reconstruction" );
     
     std::cout << "start MakeFragments" << std::endl;
     auto frag = MakeFragments ();
@@ -31,6 +33,11 @@ int main(int argc, char *argv[])
     std::cout << "start IntegrateScene" << std::endl;
     auto integration = IntegrateScene ();
     integration.Run ( path, intrinsic );
-    std::cout << "end RegisterFragments" << std::endl;
+    std::cout << "end RegisterFragments" << std::endl;*/
+
+    std::cout << "start RealTimeSystem" << std::endl;
+    auto rsSystem = RealtimeSystem ();
+    rsSystem.Run ( path, intrinsic );
+    std::cout << "end RealTimeSystem" << std::endl;
   }
 }

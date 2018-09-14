@@ -107,7 +107,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>$(OPEN3D_ROOT)include;$(OPEN3D_ROOT)include\open3d;$(OPEN3D_ROOT)include\open3d\external;$(OPEN3D_ROOT)include\open3d\external\eigen;$(OPEN3D_ROOT)include\open3d\external\glew\include;$(OPEN3D_ROOT)include\open3d\external\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPEN3D_ROOT)include;$(OPEN3D_ROOT)include\open3d;$(OPEN3D_ROOT)include\open3d\3rdparty;$(OPEN3D_ROOT)include\open3d\3rdparty\eigen;$(OPEN3D_ROOT)include\open3d\3rdparty\glew\include;$(OPEN3D_ROOT)include\open3d\3rdparty\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <SupportJustMyCode>false</SupportJustMyCode>
     </ClCompile>
     <Link>
@@ -146,7 +146,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <OpenMPSupport>true</OpenMPSupport>
-      <AdditionalIncludeDirectories>$(OPEN3D_ROOT)include;$(OPEN3D_ROOT)include\open3d;$(OPEN3D_ROOT)include\open3d\external;$(OPEN3D_ROOT)include\open3d\external\eigen;$(OPEN3D_ROOT)include\open3d\external\glew\include;$(OPEN3D_ROOT)include\open3d\external\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPEN3D_ROOT)include;$(OPEN3D_ROOT)include\open3d;$(OPEN3D_ROOT)include\open3d\3rdparty;$(OPEN3D_ROOT)include\open3d\3rdparty\eigen;$(OPEN3D_ROOT)include\open3d\3rdparty\glew\include;$(OPEN3D_ROOT)include\open3d\3rdparty\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>

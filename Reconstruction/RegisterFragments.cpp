@@ -3,6 +3,7 @@
 #include "Common.h"
 #include "OptimizePoseGraph.h"
 #include <Windows.h>
+#include "Open3dCommon.h"
 
 #include <Open3D/Core/Core.h>
 #include <Open3D/Core/Registration/FastGlobalRegistration.h>
@@ -22,17 +23,6 @@ RegisterFragments::RegisterFragments ()
 
 RegisterFragments::~RegisterFragments ()
 {
-}
-
-std::tuple<std::shared_ptr<PointCloud>, std::shared_ptr<Feature>> PreprocessPointCloud ( PointCloud& pcd )
-{
-  auto pcd_down = VoxelDownSample ( pcd, 0.05 );
-
-  EstimateNormals ( *pcd_down, KDTreeSearchParamHybrid ( 0.1, 30 ) );
-
-  auto pcd_fpfh = ComputeFPFHFeature ( *pcd_down, KDTreeSearchParamHybrid ( 0.25, 100 ) );
-
-  return std::make_tuple ( pcd_down, pcd_fpfh );
 }
 
 std::tuple<bool, Eigen::Matrix4d> RegisterPointCloudFpfh (
@@ -94,49 +84,7 @@ std::tuple<bool, Eigen::Matrix4d> ComputeInitialRegistration (
   return std::make_tuple ( true, transformation );
 }
 
-// colored pointcloud registration
-// This is implementation of following paper
-// J.Park, Q. - Y.Zhou, V.Koltun,
-// Colored Point Cloud Registration Revisited, ICCV 2017
-std::tuple<Eigen::Matrix4d, Eigen::Matrix6d> RegisterColoredPointCloudICP (
-  PointCloud& source,
-  PointCloud& target,
-  Eigen::Matrix4d init_transformation = Eigen::Matrix4d::Identity (),
-  std::vector<double> voxel_radius = { 0.05, 0.025, 0.0125 },
-  std::vector<int> max_iter = { 50, 30, 14 },
-  bool draw_result = false
-)
-{
-  auto current_transformation = init_transformation;
-  RegistrationResult result_icp;
 
-  for (int scale = 0; scale < max_iter.size (); scale++)
-  {
-    auto iter = max_iter[scale];
-    auto radius = voxel_radius[scale];
-    auto source_down = VoxelDownSample ( source, radius );
-    auto target_down = VoxelDownSample ( target, radius );
-
-    EstimateNormals ( *source_down, KDTreeSearchParamHybrid ( radius * 2, 30 ) );
-    EstimateNormals ( *target_down, KDTreeSearchParamHybrid ( radius * 2, 30 ) );
-
-    result_icp = RegistrationICP (
-      *source_down, *target_down, radius,
-      current_transformation,
-      TransformationEstimationPointToPoint ( false ),
-      ICPConvergenceCriteria ( 1e-6, 1e-6, iter ) );
-    current_transformation = result_icp.transformation_;
-  }
-
-  auto information_matrix = GetInformationMatrixFromPointClouds ( source, target, 0.07, result_icp.transformation_ );
-
-  if (draw_result)
-  {
-
-  }
-
-  return std::tie ( result_icp.transformation_, information_matrix );
-}
 
 std::tuple<bool, Eigen::Matrix4d, Eigen::Matrix6d> LocalRefinement (
   int s, int t,
@@ -148,16 +96,20 @@ std::tuple<bool, Eigen::Matrix4d, Eigen::Matrix6d> LocalRefinement (
   Eigen::Matrix4d transformation;
   Eigen::Matrix6d information;
 
+  std::shared_ptr<RegistrationResult> result;
+
   if (t == s + 1)
   {
     // odometry case
-    std::tie ( transformation, information ) = RegisterColoredPointCloudICP ( source, target, transformation_init, { 0.0125 }, { 30 } );
+    std::tie ( result, information ) = RegisterColoredPointCloudICP ( source, target, transformation_init, { 0.0125 }, { 30 } );
   }
   else
   {
     // loop closure case
-    std::tie ( transformation, information ) = RegisterColoredPointCloudICP ( source, target, transformation_init);
+    std::tie ( result, information ) = RegisterColoredPointCloudICP ( source, target, transformation_init);
   }
+
+  transformation = result->transformation_;
 
   bool success_local = false;
 
