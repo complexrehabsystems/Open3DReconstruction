@@ -64,39 +64,39 @@ void RealtimeSystem::Run ( std::string path, open3d::PinholeCameraIntrinsic intr
     depth_t = CreateImageFromFile ( depthFiles[i] );
     rgbd_t = CreateRGBDImageFromColorAndDepth ( *color_t, *depth_t, 1000.0, 3.0, false );
     pcd_t = CreatePointCloudFromRGBDImage ( *rgbd_t, intrinsic );
-    std::tie ( pcd_down_t, fpfh_t ) = PreprocessPointCloud ( *pcd_t );
+    std::tie ( pcd_down_t, fpfh_t ) = PreprocessPointCloud ( *pcd_t, true );
 
     if (i != 0)
     {
-      /* {
-     ScopeTimer t ( "RegisterColoredPointCloudICP" );
-     std::tie( registration_result_ptr, information) = RegisterColoredPointCloudICP (
-       *pcd_s, *pcd_t );
+      /*{
+        ScopeTimer t ( "RegisterColoredPointCloudICP" );
+        std::tie ( registration_result_ptr, information ) = RegisterColoredPointCloudICP (
+          *pcd_s, *pcd_t );
 
-     registration_result = *registration_result_ptr;
+        registration_result = *registration_result_ptr;
 
-     PrintInfo ( "RegisterColoredPointCloudICP rmse: %f fitness: %f\n", registration_result.inlier_rmse_, registration_result.fitness_ );
-   }
-   VisualizeRegistration ( *pcd_s, *pcd_t, registration_result.transformation_ );*/
-
-      {
-        ScopeTimer t ( "RegistrationRANSACBasedOnFeatureMatching" );
-        registration_result = RegistrationRANSACBasedOnFeatureMatching (
-          *pcd_down_s, *pcd_down_t, *fpfh_s, *fpfh_t, 0.075,
-          TransformationEstimationPointToPoint ( false ), 4,
-          correspondence_checker, RANSACConvergenceCriteria ( 4000000, 1000 ) );
-
-        PrintInfo ( "RegistrationRANSACBasedOnFeatureMatching rmse: %f fitness: %f\n", registration_result.inlier_rmse_, registration_result.fitness_ );
-      }
+        PrintInfo ( "RegisterColoredPointCloudICP rmse: %f fitness: %f\n", registration_result.inlier_rmse_, registration_result.fitness_ );
+      }*/
       //VisualizeRegistration ( *pcd_s, *pcd_t, registration_result.transformation_ );
 
-      /*{
-        ScopeTimer t ( "FastGlobalRegistration" );
-        registration_result = FastGlobalRegistration ( *pcd_down_s, *pcd_down_t, *fpfh_s, *fpfh_t, FastGlobalRegistrationOption ( 1.4, false, true, 0.07 ) );
+         {
+           ScopeTimer t ( "RegistrationRANSACBasedOnFeatureMatching" );
+           registration_result = RegistrationRANSACBasedOnFeatureMatching (
+             *pcd_down_s, *pcd_down_t, *fpfh_s, *fpfh_t, 0.075,
+             TransformationEstimationPointToPoint ( false ), 4,
+             correspondence_checker, RANSACConvergenceCriteria ( 4000000, 1000 ) );
 
-        PrintInfo ( "FastGlobalRegistration rmse: %f fitness: %f\n", registration_result.inlier_rmse_, registration_result.fitness_ );
-      }
-      VisualizeRegistration ( *pcd_s, *pcd_t, registration_result.transformation_ );*/
+           PrintInfo ( "RegistrationRANSACBasedOnFeatureMatching rmse: %f fitness: %f\n", registration_result.inlier_rmse_, registration_result.fitness_ );
+         }
+         //VisualizeRegistration ( *pcd_s, *pcd_t, registration_result.transformation_ );
+
+         /*{
+           ScopeTimer t ( "FastGlobalRegistration" );
+           registration_result = FastGlobalRegistration ( *pcd_down_s, *pcd_down_t, *fpfh_s, *fpfh_t, FastGlobalRegistrationOption ( 1.4, false, true, 0.07 ) );
+
+           PrintInfo ( "FastGlobalRegistration rmse: %f fitness: %f\n", registration_result.inlier_rmse_, registration_result.fitness_ );
+         }
+         VisualizeRegistration ( *pcd_s, *pcd_t, registration_result.transformation_ );*/
     }
 
     volume.Integrate ( *rgbd_t, intrinsic, registration_result.transformation_ );

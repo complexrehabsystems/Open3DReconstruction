@@ -7,7 +7,9 @@
 
 #include <tuple>
 
-std::tuple<std::shared_ptr<open3d::PointCloud>, std::shared_ptr<open3d::Feature>> PreprocessPointCloud ( open3d::PointCloud& pcd );
+std::tuple<std::shared_ptr<open3d::PointCloud>, std::shared_ptr<open3d::Feature>> PreprocessPointCloud ( 
+  open3d::PointCloud& pcd,
+  bool downsample = true);
 
 void VisualizeRegistration (
   const open3d::PointCloud &source,

@@ -2,15 +2,29 @@
 
 using namespace open3d;
 
-std::tuple<std::shared_ptr<PointCloud>, std::shared_ptr<Feature>> PreprocessPointCloud ( PointCloud& pcd )
+std::tuple<std::shared_ptr<PointCloud>, std::shared_ptr<Feature>> PreprocessPointCloud ( 
+  PointCloud& pcd, 
+  bool downsample )
 {
-  auto pcd_down = VoxelDownSample ( pcd, 0.05 );
+  if (downsample)
+  {
 
-  EstimateNormals ( *pcd_down, KDTreeSearchParamHybrid ( 0.1, 30 ) );
+    auto pcd_down = VoxelDownSample ( pcd, 0.05 );
 
-  auto pcd_fpfh = ComputeFPFHFeature ( *pcd_down, KDTreeSearchParamHybrid ( 0.25, 100 ) );
+    EstimateNormals ( *pcd_down, KDTreeSearchParamHybrid ( 0.1, 30 ) );
 
-  return std::make_tuple ( pcd_down, pcd_fpfh );
+    auto pcd_fpfh = ComputeFPFHFeature ( *pcd_down, KDTreeSearchParamHybrid ( 0.25, 100 ) );
+
+    return std::make_tuple ( pcd_down, pcd_fpfh );
+  }
+  else
+  {
+    EstimateNormals ( pcd, KDTreeSearchParamHybrid ( 0.1, 30 ) );
+
+    auto pcd_fpfh = ComputeFPFHFeature ( pcd, KDTreeSearchParamHybrid ( 0.25, 100 ) );
+
+    return std::make_tuple ( std::make_shared<PointCloud>(pcd), pcd_fpfh );
+  }
 }
 
 void VisualizeRegistration ( 
